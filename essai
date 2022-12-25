@@ -14,68 +14,6 @@ struct Product {
 
 
 
-void add_product(struct Product p) {
-  // Ouvrez le fichier en mode "append" pour ajouter des données à la fin du fichier
-  FILE *fp = fopen("products.txt", "a");
-  if (fp == NULL) {
-    printf("Error opening file!\n");
-    exit(1);
-  }
-
-  // Écrivez les informations sur le produit dans le fichier
-  fprintf(fp, "%s,%d,%f\n", p.name, p.quantity, p.price);
-
-  // Fermez le fichier
-  fclose(fp);
-}
-
-
-
-
-void display_product(char *name) {
-  // Ouvrez le fichier en mode "lecture"
-  FILE *fp = fopen("products.txt", "r");
-  if (fp == NULL) {
-    printf("Error opening file!\n");
-    exit(1);
-  }
-
-  // Créez une variable pour stocker chaque ligne lue dans le fichier
-  char line[100];
-
-  // Utilisez fgets() pour lire chaque ligne du fichier
-  while (fgets(line, 100, fp) != NULL) {
-    // Séparez les informations sur le produit en utilisant strtok()
-    int s;
-    char *product_name = strtok(line, ",");
-    char *quantity_str = strtok(NULL, ",");
-    char *price_str = strtok(NULL, ",");
-    s=product_name==name;
-    // Si le nom du produit correspond à celui recherché, affichez les informations
-    if (s==0) {
-        printf("\n\t\t            ***PRODUCT'S DESCRIPTION***\n");
-        printf("\t\t  ================================================\n");
-        printf("\t\t          NAME         ||     %-10s\n",product_name);
-        printf("\t\t  ================================================\n");
-        printf("\t\t          QUANTITY     ||     %s\n",quantity_str);
-        printf("\t\t  ================================================\n");
-        printf("\t\t          PRICE        ||     %s\n",price_str);
-        printf("\t\t  ================================================");
-
-
-	  /*printf("Product: %s\n",product_name);
-      printf("Quantity: %s\n",quantity_str);
-      printf("Price: %s\n",price_str);*/
-      break;
-    }
-  }
-
-  // Fermez le fichier
-  fclose(fp);
-}
-
-
-
 
 
 
@@ -220,6 +158,71 @@ struct Product search_product(char *name) {
 
 
 
+void add_product(struct Product p) {
+  // Ouvrez le fichier en mode "append" pour ajouter des données à la fin du fichier
+  FILE *fp = fopen("products.txt", "a");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Écrivez les informations sur le produit dans le fichier
+  fprintf(fp, "%s,%d,%f\n", p.name, p.quantity, p.price);
+
+  // Fermez le fichier
+  fclose(fp);
+}
+
+
+
+void display_product(char name[100]) {
+    #define bool unsigned int;
+    #define true 1;
+    #define false 0;
+  // Ouvrez le fichier en mode "lecture"
+  FILE *fp = fopen("products.txt", "r");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    int s;
+    char *product_name = strtok(line, ",");
+    char *quantity_str = strtok(NULL, ",");
+    char *price_str = strtok(NULL, ",");
+    // Si le nom du produit correspond à celui recherché, affichez les informations
+    if (strcmp(product_name, name) == 0) {
+        printf("\n\t\t            ***PRODUCT'S DESCRIPTION***\n");
+        printf("\t\t  ================================================\n");
+        printf("\t\t          NAME         ||     %-10s\n",product_name);
+        printf("\t\t  ================================================\n");
+        printf("\t\t          QUANTITY     ||     %s\n",quantity_str);
+        printf("\t\t  ================================================\n");
+        printf("\t\t          PRICE        ||     %s\n",price_str);
+        printf("\t\t  ================================================");
+
+
+	  /*printf("Product: %s\n",product_name);
+      printf("Quantity: %s\n",quantity_str);
+      printf("Price: %s\n",price_str);*/
+      
+    }
+    else printf("\n\t\t            the product doesn't exist\n");
+
+  }
+
+  // Fermez le fichier
+  fclose(fp);
+}
+
+
+
 
 int main() {
     printf("\n");
@@ -229,7 +232,7 @@ int main() {
 
     while (1) {
         // Affichez le menu
-        printf("\n\n\t\t\t  |\t     ***MENU***          |\n");
+        printf("\n\n\t\t\t   \t     ***MENU***          \n");
         printf("\t\t\t   ------------------------------\n");
         printf("\t\t\t  |\t 1. Add product          |\n");
         printf("\t\t\t   ------------------------------\n");
@@ -255,14 +258,19 @@ int main() {
             // Ajouter un produit
             struct Product p ;
             char name[100];
-            printf("Enter product name: ");
-            scanf("%s",	name);
-            printf("Enter the product quantity to add: ");
             int quantity;
-            scanf("%d", &quantity);
-            printf("Enter product price: ");
             float price;
+            printf("\n\t\t                ***ADD PRODUCT***\n");
+            printf("\t\t  ================================================\n");
+            printf("\t\t          NAME         ||     ");
+            scanf("%s",	&name);
+            printf("\t\t  ================================================\n");
+            printf("\t\t          QUANTITY     ||     ");
+            scanf("%d", &quantity);
+            printf("\t\t  ================================================\n");
+            printf("\t\t          PRICE        ||     ");
             scanf("%f", &price);
+            printf("\t\t  ================================================\n");
             strcpy(p.name,name);
             p.quantity=quantity;
             p.price=price;
@@ -270,10 +278,10 @@ int main() {
             break;
         case 2:;
             // Afficher la description d'un produit
-            char* nom[100];
+            char nom[100];
             printf("Enter product name: ");
             scanf("%s",&nom);
-            display_product(*nom);
+            display_product(nom);
             break;
         case 3:
             // Supprimer un produit

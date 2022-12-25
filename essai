@@ -13,6 +13,8 @@ struct Product {
 
 
 void add_product(struct Product p) {
+//parcours pour verifier qu il n existe pas
+// cas:existant product ==>update_product
   // Ouvrez le fichier en mode "append" pour ajouter des données à la fin du fichier
   FILE *fp = fopen("products.txt", "a");
   if (fp == NULL) {

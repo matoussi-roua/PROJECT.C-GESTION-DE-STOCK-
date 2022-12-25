@@ -1,0 +1,288 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+
+struct Product {
+  char name[100];
+  int quantity;
+  float price;
+};
+
+
+
+void add_product(struct Product p) {
+  // Ouvrez le fichier en mode "append" pour ajouter des données à la fin du fichier
+  FILE *fp = fopen("products.txt", "a");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Écrivez les informations sur le produit dans le fichier
+  fprintf(fp, "%s,%d,%f\n", p.name, p.quantity, p.price);
+
+  // Fermez le fichier
+  fclose(fp);
+}
+
+
+
+
+void display_product(char *name) {
+  // Ouvrez le fichier en mode "lecture"
+  FILE *fp = fopen("products.txt", "r");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    char *product_name = strtok(line, ",");
+    char *quantity_str = strtok(NULL, ",");
+    char *price_str = strtok(NULL, ",");
+
+    // Si le nom du produit correspond à celui recherché, affichez les informations
+    if (strcmp(product_name, name) == 0) {
+      printf("Product: %s\n", product_name);
+      printf("Quantity: %s\n", quantity_str);
+      printf("Price: %s\n", price_str);
+      break;
+    }
+  }
+
+  // Fermez le fichier
+  fclose(fp);
+}
+
+
+
+
+
+
+void delete_product(char *name) {
+  // Ouvrez le fichier en mode "lecture"
+  FILE *fp = fopen("products.txt", "r");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Créez un fichier temporaire pour stocker les lignes à conserver
+  FILE *temp_fp = fopen("temp.txt", "w");
+  if (temp_fp == NULL) {
+    printf("Error creating temporary file!\n");
+    exit(1);
+  }
+
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    char *product_name = strtok(line, ",");
+
+    // Si le nom du produit ne correspond pas à celui à supprimer, écrivez la ligne dans le fichier temporaire
+    if (strcmp(product_name, name) != 0) {
+      fprintf(temp_fp, "%s", line);
+    }
+  }
+
+  // Fermez les fichiers
+  fclose(fp);
+  fclose(temp_fp);
+
+  // Supprimez le fichier original
+  remove("products.txt");
+
+  // Renommez le fichier temporaire en "products.txt"
+  rename("temp.txt", "products.txt");
+}
+
+
+
+
+
+
+
+void update_product(char *name, int new_quantity, float new_price) {
+  // Ouvrez le fichier en mode "lecture"
+  FILE *fp = fopen("products.txt", "r");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Créez un fichier temporaire pour stocker les lignes mises à jour
+  FILE *temp_fp = fopen("temp.txt", "w");
+  if (temp_fp == NULL) {
+    printf("Error creating temporary file!\n");
+    exit(1);
+  }
+
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    char *product_name = strtok(line, ",");
+    char *quantity_str = strtok(NULL, ",");
+    char *price_str = strtok(NULL, ",");
+
+    // Si le nom du produit correspond à celui à mettre à jour, utilisez les nouvelles informations
+    if (strcmp(product_name, name) == 0) {
+      fprintf(temp_fp, "%s,%d,%.2f\n", name, new_quantity, new_price);
+    }
+    else {
+      // Sinon, écrivez la ligne dans le fichier temporaire sans modification
+      fprintf(temp_fp, "%s", line);
+    }
+  }
+
+  // Fermez les fichiers
+  fclose(fp);
+  fclose(temp_fp);
+
+  // Supprimez le fichier original
+  remove("products.txt");
+
+  // Renommez le fichier temporaire en "products.txt"
+  rename("temp.txt", "products.txt");
+}
+
+
+
+
+
+
+
+
+struct Product search_product(char *name) {
+  // Ouvrez le fichier en mode "lecture"
+  FILE *fp = fopen("products.txt", "r");
+  if (fp == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  // Créez une variable de type Product pour stocker les informations sur le produit
+  struct Product p;
+  p.name[0] = '\0';
+  p.quantity = 0;
+  p.price = 0.0;
+
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    char *product_name = strtok(line, ",");
+    char *quantity_str = strtok(NULL, ",");
+    char *price_str = strtok(NULL, ",");
+
+    // Si le nom du produit correspond à celui recherché, mettez à jour la variable de type Product
+    if (strcmp(product_name, name) == 0) {
+      strcpy(p.name, product_name);
+      p.quantity = atoi(quantity_str);
+      p.price = atof(price_str);
+      break;
+    }
+  }
+
+  // Fermez le fichier
+  fclose(fp);
+
+  return p;
+}
+
+
+
+
+
+int main(void) {
+  while (1) {
+    // Affichez le menu
+    printf("\nStock Manager\n");
+    printf("1. Add product\n");
+    printf("2. Display product\n");
+    printf("3. Delete product\n");
+    printf("4. Update product\n");
+    printf("5. Search product\n");
+    printf("6. Exit\n");
+    printf("Enter your choice: ");
+
+    // Lit le choix de l'utilisateur
+    int choice;
+    scanf("%d", &choice);
+
+    // Selon le choix de l'utilisateur, appelez la fonction correspondante
+    switch (choice) {
+      case 1:
+        // Ajouter un produit
+        struct produit p ;
+        char name[100];
+        printf("Enter product name: ");
+        gets(name);
+        printf("Enter the product quantity to add: ");
+        int quantity;
+        scanf("%d", &quantity);
+        printf("Enter product price: ");
+        float price;
+        scanf("%f", &price);
+        p.name=name;
+        p.quantity=quantity;
+        p.price=price;
+        add_product(p);
+        break;
+      case 2:
+        // Afficher la description d'un produit
+        char name[50];
+        printf("Enter product name: ");
+        scanf("%s", name);
+        display_product(name);
+        break;
+      case 3:
+        // Supprimer un produit
+        printf("Enter product name: ");
+        scanf("%s", name);
+        delete_product(name);
+        break;
+      case 4:
+        // Modifier un produit
+        printf("Enter product name: ");
+        scanf("%s", name);
+        printf("Enter new quantity: ");
+        int quantity;
+        scanf("%d", &quantity);
+        printf("Enter new price: ");
+        float price;
+        scanf("%f", &price);
+        update_product(name, quantity, price);
+        break;
+      case 5:
+        // Rechercher un produit
+        printf("Enter product name: ");
+        scanf("%s", name);
+        struct Product p = search_product(name);
+        printf("Product: %s\n", p.name);
+        printf("Quantity: %d\n", p.quantity);
+        printf("Price: %.2f\n", p.price);
+        break;
+      case 6:
+        // Quitter l'application
+        return 0;
+      default:
+        printf("Invalid choice!\n");
+        break;
+    }
+  }
+}

@@ -46,11 +46,13 @@ void display_product(char *name) {
   // Utilisez fgets() pour lire chaque ligne du fichier
   while (fgets(line, 100, fp) != NULL) {
     // Séparez les informations sur le produit en utilisant strtok()
+    int s;
     char *product_name = strtok(line, ",");
     char *quantity_str = strtok(NULL, ",");
     char *price_str = strtok(NULL, ",");
+    s=product_name==name;
     // Si le nom du produit correspond à celui recherché, affichez les informations
-    if (product_name==name) {
+    if (s==0) {
 	  printf("Product: %s\n",product_name);
       printf("Quantity: %s\n",quantity_str);
       printf("Price: %s\n",price_str);

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
+#include<stdbool.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -13,10 +15,6 @@ struct Product {
 
 
 void add_product(struct Product p) {
-//parcours pour verifier qu il n existe pas 
-//il existe:
-// cas:existant product ==>update_product
-// il n existe pas
   // Ouvrez le fichier en mode "append" pour ajouter des données à la fin du fichier
   FILE *fp = fopen("products.txt", "a");
   if (fp == NULL) {
@@ -51,12 +49,11 @@ void display_product(char *name) {
     char *product_name = strtok(line, ",");
     char *quantity_str = strtok(NULL, ",");
     char *price_str = strtok(NULL, ",");
-
     // Si le nom du produit correspond à celui recherché, affichez les informations
-    if (strcmp(product_name, name) == 0) {
-      printf("Product: %s\n", product_name);
-      printf("Quantity: %s\n", quantity_str);
-      printf("Price: %s\n", price_str);
+    if (product_name==name) {
+	  printf("Product: %s\n",product_name);
+      printf("Quantity: %s\n",quantity_str);
+      printf("Price: %s\n",price_str);
       break;
     }
   }
@@ -212,7 +209,7 @@ struct Product search_product(char *name) {
 
 
 
-int main(void) {
+int main() {
   while (1) {
     // Affichez le menu
     printf("\nStock Manager\n");
@@ -230,29 +227,29 @@ int main(void) {
 
     // Selon le choix de l'utilisateur, appelez la fonction correspondante
     switch (choice) {
-      case 1:
+      case 1:;
         // Ajouter un produit
-        struct produit p ;
+        struct Product p ;
         char name[100];
         printf("Enter product name: ");
-        gets(name);
+        scanf("%s",	name);
         printf("Enter the product quantity to add: ");
         int quantity;
         scanf("%d", &quantity);
         printf("Enter product price: ");
         float price;
         scanf("%f", &price);
-        p.name=name;
+        strcpy(p.name,name);
         p.quantity=quantity;
         p.price=price;
         add_product(p);
         break;
-      case 2:
+      case 2:;
         // Afficher la description d'un produit
-        char name[50];
+        char* nom[100];
         printf("Enter product name: ");
-        scanf("%s", name);
-        display_product(name);
+        scanf("%s",&nom);
+        display_product(*nom);
         break;
       case 3:
         // Supprimer un produit
@@ -265,18 +262,18 @@ int main(void) {
         printf("Enter product name: ");
         scanf("%s", name);
         printf("Enter new quantity: ");
-        int quantity;
-        scanf("%d", &quantity);
+        int quantit;
+        scanf("%d", &quantit);
         printf("Enter new price: ");
-        float price;
-        scanf("%f", &price);
+        float pric;
+        scanf("%f", &pric);
         update_product(name, quantity, price);
         break;
       case 5:
         // Rechercher un produit
         printf("Enter product name: ");
         scanf("%s", name);
-        struct Product p = search_product(name);
+        struct Product p1 = search_product(name);
         printf("Product: %s\n", p.name);
         printf("Quantity: %d\n", p.quantity);
         printf("Price: %.2f\n", p.price);

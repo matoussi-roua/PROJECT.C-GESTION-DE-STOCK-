@@ -53,9 +53,19 @@ void display_product(char *name) {
     s=product_name==name;
     // Si le nom du produit correspond à celui recherché, affichez les informations
     if (s==0) {
-	  printf("Product: %s\n",product_name);
+        printf("\n          ***PRODUCT'S DESCRIPTION***\n");
+        printf("================================================\n");
+        printf("        NAME         ||     %-10s\n",product_name);
+        printf("================================================\n");
+        printf("        QUANTITY     ||     %s\n",quantity_str);
+        printf("================================================\n");
+        printf("        PRICE        ||     %s\n",price_str);
+        printf("================================================");
+
+
+	  /*printf("Product: %s\n",product_name);
       printf("Quantity: %s\n",quantity_str);
-      printf("Price: %s\n",price_str);
+      printf("Price: %s\n",price_str);*/
       break;
     }
   }
@@ -212,6 +222,11 @@ struct Product search_product(char *name) {
 
 
 int main() {
+    printf("\n");
+	printf("\t\t\t  ================================\n");
+	printf("\t\t\t     STOCK-MANAGER PROGRAM\n");
+	printf("\t\t\t  ================================");
+
   while (1) {
     // Affichez le menu
     printf("\nStock Manager\n");

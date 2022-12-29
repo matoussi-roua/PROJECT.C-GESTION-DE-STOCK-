@@ -278,7 +278,6 @@ void display_product(char name[100]) {
   while (fgets(line, 100, fp) != NULL) {
     test_not_empty=1;
     // Séparez les informations sur le produit en utilisant strtok()
-    int s;
     char *product_name = strtok(line, ",");
     char *quantity_str = strtok(NULL, ",");
     char *price_str = strtok(NULL, ",");
@@ -292,11 +291,7 @@ void display_product(char name[100]) {
         printf("\t\t  ================================================\n");
         printf("\t\t          PRICE        ||     %s\n",price_str);
         printf("\t\t  ================================================");
-        test=1;
-
-	  /*printf("Product: %s\n",product_name);
-      printf("Quantity: %s\n",quantity_str);
-      printf("Price: %s\n",price_str);*/
+        test_exist=1;
       
     }
 
@@ -304,7 +299,7 @@ void display_product(char name[100]) {
   if (test_not_empty==0){
     printf("\n\t\t                the file is empty\n");}
   else {
-    if (test==0){
+    if (test_exist==0){
       printf("\n\t\t            the product doesn't exist\n");
     }
   }

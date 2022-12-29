@@ -240,7 +240,7 @@ void delete_product(char name[100]) {
 
         // Si le nom du produit ne correspond pas à celui à supprimer, écrivez la ligne dans le fichier temporaire
         if (strcmp(product_name, name) != 0) {
-            printf("oui");
+            
             fprintf(temp_fp, "%s", line);
         }
     }
@@ -300,8 +300,12 @@ void display_product(char name[100]) {
       printf("Price: %s\n",price_str);*/
       
     }
-    else printf("\n\t\t            the product doesn't exist\n");
+    else {
+    
+    printf("\n\t\t            the product doesn't exist\n");
+    system("pause");
 
+    }
   }
 
   // Fermez le fichier

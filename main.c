@@ -108,12 +108,12 @@ void show_all(void) {
 
   // Créez une variable pour stocker chaque ligne lue dans le fichier
   char line[100];
-int main();
+
   struct stat st;
   stat("products.txt", &st); 
   if (st.st_size == 0){
     printf("Your Stock is Empty!");
-    main();}
+    }
   printf("\n\t\t            ***ALL EXISTING PRODUCTS***\n");
   printf("\t\t  ================================================\n");    
   

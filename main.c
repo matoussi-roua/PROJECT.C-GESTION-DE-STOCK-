@@ -340,11 +340,7 @@ struct Product search_product(char *name) {
       p.price = atof(price_str);
       break;
     }
-    else {
-        sprintf(p.name,"%s","NONE");
-        p.quantity = 0;
-        p.price = 0;
-  }
+    
 
   // Fermez le fichier
   fclose(fp);
@@ -548,7 +544,7 @@ int main() {
             scanf("%s", name);
             struct Product p1 ;
             p1=  search_product(name) ;
-            if(p.name != "NONE"){
+            if(p1.quantity != 0){
             printf("Product: %s\n", p.name);
             printf("Quantity: %d\n", p.quantity);
             printf("Price: %.2f\n", p.price);}

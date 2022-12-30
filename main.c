@@ -95,41 +95,50 @@ struct date get_date() {
 }
 
 
-void show_all(int *k) {
+void show_all(void) {
+    /*#define bool unsigned int;
+    #define true 1;
+    #define false 0;*/
+  // Ouvrez le fichier en mode "lecture"
   FILE *fp = fopen("products.txt", "r");
   if (fp == NULL) {
     printf("Error opening file!\n");
-    *k=1;
+    exit(1);
   }
-  else{
-    // Créez une variable pour stocker chaque ligne lue dans le fichier
-    char line[100];
 
-    struct stat st;
-    stat("products.txt", &st); 
-    if (st.st_size == 0){
-      *k=1;
-      printf("\n\t\t                ***FILE IS EMPTY***\n");
+  // Créez une variable pour stocker chaque ligne lue dans le fichier
+  char line[100];
+int main();
+  struct stat st;
+  stat("products.txt", &st); 
+  if (st.st_size == 0){
+    printf("Your Stock is Empty!");
+    main();
+    }
+  printf("\n\t\t            ***ALL EXISTING PRODUCTS***\n");
+  printf("\t\t  ================================================\n");    
+  
+  // Utilisez fgets() pour lire chaque ligne du fichier
+  while (fgets(line, 100, fp) != NULL) {
+    // Séparez les informations sur le produit en utilisant strtok()
+    int s;
+    char *product_name = strtok(line, ",");
+    // Si le nom du produit correspond à celui recherché, affichez les informations
+        printf("\t\t                    NAME : %-10s\n",product_name);
+        printf("\t\t  ================================================\n");
+        
 
-    }
-    else{
-      printf("\n\t\t            ***ALL EXISTING PRODUCTS***\n");
-      printf("\t\t  ================================================\n");    
+
+	  /*printf("Product: %s\n",product_name);
+      printf("Quantity: %s\n",quantity_str);
+      printf("Price: %s\n",price_str);*/
       
-      // Utilisez fgets() pour lire chaque ligne du fichier
-      while (fgets(line, 100, fp) != NULL) {
-        // Séparez les informations sur le produit en utilisant strtok()
-        int s;
-        char *product_name = strtok(line, ",");
-        // Si le nom du produit correspond à celui recherché, affichez les informations
-            printf("\t\t                    NAME : %-10s\n",product_name);
-            printf("\t\t  ================================================\n");
-      }
-      
-      // Fermez le fichier
-      fclose(fp);
-    }
+    
+
   }
+  
+  // Fermez le fichier
+  fclose(fp);
 }
 
 
@@ -166,7 +175,7 @@ void addH(char name[],char descrip[], int quan,char d[], char m[],int y ){
     sprintf(file_name, "%s/%s.txt", destination2,d);
     file = fopen(file_name, "a");
     
-    sprintf(info, "%s~~~~%s~~~~%d", name,descrip,quan);
+    sprintf(info, "THE PRODUCT :%s  %s IN %s/%s/%d", name,descrip,d,m,y);
     fprintf(file,"%s\n",info);
 
     fclose(file);
@@ -374,20 +383,23 @@ void seeH(void){
     int y;
     
     FILE *file;
-
+    printf("\n***ALL EXISTING YEARS***");
     direc("./ARCHIVES");
-    printf("Enter the year: ");   
+    printf("Enter the year : ");   
     scanf("%d", &y);
     sprintf(destination, "./ARCHIVES/%d",y);
-    
+
+    printf("\n***ALL EXISTING MONTHS***");
     direc(destination);
-    printf("Enter the month: ");
+    printf("Enter the month : ");
     scanf("%s",&m);
     sprintf(destination2, "%s/%s",destination,m);
 
+    printf("\n***ALL EXISTING DAYS***");
     direc(destination2);
-    printf("Enter the day: ");
+    printf("Enter the day : ");
     scanf("%s",&d);
+    printf("\n");
     sprintf(file_name, "%s/%s.txt", destination2,d);
 
     file = fopen(file_name, "r");
@@ -450,7 +462,7 @@ void update_product(char *name, int new_quantity, float new_price) {
 
 
 int main() {
-  printf("\n");
+    printf("\n");
 	printf("\t\t\t  ================================\n");
 	printf("\t\t\t     STOCK-MANAGER PROGRAM\n");
 	printf("\t\t\t  ================================\n\n");
@@ -504,61 +516,39 @@ int main() {
             add_product(p);
             break;
         case 2:;
-            int *a ;
-            a=0;
-
             // Afficher la description d'un produit
-            show_all(&a);
-            if (a==0){
-              char nom[100];
-              printf("Enter product name: ");
-              scanf("%s",&nom);
-              display_product(nom);
-              break;
-            }
-            else break;
-            
-        
-        case 3:;
-            int *b;
-            b=0;
-
-
-            // Supprimer un produit
-            show_all(&b);
-            if (b==0){
-              char name3[100];
-              printf("Enter product name: ");
-              scanf("%s", &name3);
-              delete_product(name3);
-              break;
-            }
-            else break;
-        case 4:;
-            int *c;
-            c=0;
-            // Modifier un produit
-            show_all(&c);
-            if (c==0){
-              char name4[100];
-              printf("Enter product name: ");
-              scanf("%s", &name4);
-              printf("Enter new quantity: ");
-              int quantit;
-              scanf("%d", &quantit);
-              printf("Enter new price: ");
-              float pric;
-              scanf("%f", &pric);
-              update_product(name4, quantit, pric);
-            }
+            show_all();
+            char nom[100];
+            printf("Enter product name: ");
+            scanf("%s",&nom);
+            display_product(nom);
             break;
-        case 5:;
-            char name5[100];
+        case 3:
+            // Supprimer un produit
+            show_all();
+            printf("Enter product name: ");
+            scanf("%s", name);
+            delete_product(name);
+            break;
+        case 4:
+            // Modifier un produit
+            show_all();
+            printf("Enter product name: ");
+            scanf("%s", name);
+            printf("Enter new quantity: ");
+            int quantit;
+            scanf("%d", &quantit);
+            printf("Enter new price: ");
+            float pric;
+            scanf("%f", &pric);
+            update_product(name, quantit, pric);
+            break;
+        case 5:
             // Rechercher un produit
             printf("Enter product name: ");
-            scanf("%s", &name5);
+            scanf("%s", name);
             struct Product p1 ;
-            p1=  search_product(name5) ;
+            p1=  search_product(name) ;
             if(p1.quantity != 0){
             printf("Product: %s\n", p.name);
             printf("Quantity: %d\n", p.quantity);
@@ -571,10 +561,13 @@ int main() {
             break;
         case 7:
             // Quitter l'application
-            return 0;
+            /*return 0;*/
+            exit(1);
         default:
             printf("Invalid choice!\n");
             break;
         }
     }
+    
+
 }

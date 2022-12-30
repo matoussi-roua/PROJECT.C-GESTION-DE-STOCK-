@@ -113,7 +113,7 @@ int main();
   stat("products.txt", &st); 
   if (st.st_size == 0){
     printf("Your Stock is Empty!");
-	main();
+    main();
     }
   printf("\n\t\t            ***ALL EXISTING PRODUCTS***\n");
   printf("\t\t  ================================================\n");    
@@ -558,10 +558,13 @@ int main() {
             break;
         case 7:
             // Quitter l'application
-            return 0;
+            /*return 0;*/
+            exit(1);
         default:
             printf("Invalid choice!\n");
             break;
         }
     }
+    
+
 }

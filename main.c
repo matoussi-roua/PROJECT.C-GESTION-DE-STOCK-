@@ -530,18 +530,22 @@ int main() {
             scanf("%s", name);
             delete_product(name);
             break;
-        case 4:
+        case 4:;
             // Modifier un produit
+            int quantity4;
+            float price4;
             show_all();
-            printf("Enter product name: ");
+            printf("\t\t   ENTER PRODUCT NAME  ||     ");            
             scanf("%s", name);
-            printf("Enter new quantity: ");
-            int quantit;
-            scanf("%d", &quantit);
-            printf("Enter new price: ");
-            float pric;
-            scanf("%f", &pric);
-            update_product(name, quantit, pric);
+            display_product(name);
+            printf("\n\t\t      NEW QUANTITY     ||     ");
+            scanf("%d", &quantity4);
+            printf("\t\t  ================================================\n");
+            printf("\t\t      NEW PRICE        ||     ");
+            scanf("%f", &price4);
+            printf("\t\t  ================================================\n");
+
+            update_product(name, quantity4, price4);
             break;
         case 5:
             // Rechercher un produit

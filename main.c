@@ -31,7 +31,7 @@ int day()
     res = current_time->tm_mday;
     return res;
 }
-
+//fin
 
 int month(void)
 {

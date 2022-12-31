@@ -249,6 +249,7 @@ void delete_product(char name[100]) {
 }
 
 
+
 void display_product(char name[100]) {
 
   // Ouvrez le fichier en mode "lecture"

@@ -31,7 +31,7 @@ int day()
     res = current_time->tm_mday;
     return res;
 }
-
+//fin
 
 int month(void)
 {
@@ -175,7 +175,7 @@ void addH(char name[],char descrip[], int quan,char d[], char m[],int y ){
     sprintf(file_name, "%s/%s.txt", destination2,d);
     file = fopen(file_name, "a");
     
-    sprintf(info, "%s~~~~%s~~~~%d", name,descrip,quan);
+    sprintf(info, "THE PRODUCT :%s  %s IN %s/%s/%d", name,descrip,d,m,y);
     fprintf(file,"%s\n",info);
 
     fclose(file);
@@ -383,20 +383,23 @@ void seeH(void){
     int y;
     
     FILE *file;
-
+    printf("\n***ALL EXISTING YEARS***");
     direc("./ARCHIVES");
-    printf("Enter the year: ");   
+    printf("Enter the year : ");   
     scanf("%d", &y);
     sprintf(destination, "./ARCHIVES/%d",y);
-    
+
+    printf("\n***ALL EXISTING MONTHS***");
     direc(destination);
-    printf("Enter the month: ");
+    printf("Enter the month : ");
     scanf("%s",&m);
     sprintf(destination2, "%s/%s",destination,m);
 
+    printf("\n***ALL EXISTING DAYS***");
     direc(destination2);
-    printf("Enter the day: ");
+    printf("Enter the day : ");
     scanf("%s",&d);
+    printf("\n");
     sprintf(file_name, "%s/%s.txt", destination2,d);
 
     file = fopen(file_name, "r");
@@ -527,18 +530,22 @@ int main() {
             scanf("%s", name);
             delete_product(name);
             break;
-        case 4:
+        case 4:;
             // Modifier un produit
+            int quantity4;
+            float price4;
             show_all();
-            printf("Enter product name: ");
+            printf("\t\t   ENTER PRODUCT NAME  ||     ");            
             scanf("%s", name);
-            printf("Enter new quantity: ");
-            int quantit;
-            scanf("%d", &quantit);
-            printf("Enter new price: ");
-            float pric;
-            scanf("%f", &pric);
-            update_product(name, quantit, pric);
+            display_product(name);
+            printf("\n\t\t      NEW QUANTITY     ||     ");
+            scanf("%d", &quantity4);
+            printf("\t\t  ================================================\n");
+            printf("\t\t      NEW PRICE        ||     ");
+            scanf("%f", &price4);
+            printf("\t\t  ================================================\n");
+
+            update_product(name, quantity4, price4);
             break;
         case 5:
             // Rechercher un produit

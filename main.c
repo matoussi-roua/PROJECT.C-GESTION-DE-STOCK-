@@ -193,7 +193,7 @@ void add_product(struct Product p1) {
     //Enregistrer l'operation dans historique
     struct date dt = get_date();
 
-    addH(p.name,"Added to the stock",p.quantity,dt.d,dt.m,dt.y);
+    addH(p.name,"ADDED TO THE STOCK",p.quantity,dt.d,dt.m,dt.y);
 }
 
 
@@ -245,7 +245,7 @@ void delete_product(char name[100]) {
     //Enregistrer l'operation dans historique
     struct date dt = get_date();
 
-    addH(name,"Deleted from the stock",0,dt.d,dt.m,dt.y);
+    addH(name,"DELETED FROM THE STOCK",0,dt.d,dt.m,dt.y);
 }
 
 
@@ -298,7 +298,7 @@ void display_product(char name[100]) {
 }
 
 
-struct Product search_product(char *name) {
+struct Product search_product(char name[100]) {
   // Ouvrez le fichier en mode "lecture"
   FILE *fp = fopen("products.txt", "r");
   if (fp == NULL) {
@@ -309,6 +309,7 @@ struct Product search_product(char *name) {
   // Créez une variable de type Product pour stocker les informations sur le produit
   struct Product p;
   p.name[0] = '\0';
+  //p.name= '\0';
   p.quantity = 0;
   p.price = 0.0;
 
@@ -328,14 +329,12 @@ struct Product search_product(char *name) {
       p.quantity = atoi(quantity_str);
       p.price = atof(price_str);
       break;
-    }
-    
-
+    } 
+  }
   // Fermez le fichier
   fclose(fp);
-
   return p;
-}}
+}
 
 
 int direc(const char *dest){
@@ -425,6 +424,8 @@ void update_product(char name[100], int new_quantity, float new_price) {
     // Si le nom du produit correspond à celui à mettre à jour, utilisez les nouvelles informations
     if (strcmp(product_name, name) == 0) {
       fprintf(temp_fp, "%s,%d,%f\n", name, new_quantity, new_price);
+      struct date dt = get_date();
+      addH(name,"UPDATED",quantity_str,dt.d,dt.m,dt.y);
     }
     else {
       // Sinon, écrivez la ligne dans le fichier temporaire sans modification
@@ -442,6 +443,7 @@ void update_product(char name[100], int new_quantity, float new_price) {
 
   // Renommez le fichier temporaire en "products.txt"
   rename("temp.txt", "products.txt");
+  
 }
 
 
@@ -532,17 +534,25 @@ int main() {
 
             update_product(name4, quantity4, price4);
             break;
-        case 5:
+        case 5:;
             // Rechercher un produit
-            printf("Enter product name: ");
-            scanf("%s", name);
+            char name5[100];
             struct Product p1 ;
-            p1=  search_product(name) ;
+
+            printf("Enter product name: ");
+            scanf("%s", &name5);
+            p1= search_product(name5) ;
             if(p1.quantity != 0){
-            printf("Product: %s\n", p1.name);
-            printf("Quantity: %d\n", p1.quantity);
-            printf("Price: %.2f\n", p1.price);}
-            else printf("\n\t\t            the product doesn't exist\n");
+              printf("\n\t\t                ***THE PRODUCT EXISTS***\n");
+              printf("\t\t  ================================================\n");
+              printf("\t\t          NAME         ||   %s  \n",p1.name);
+              printf("\t\t  ================================================\n");
+              printf("\t\t          QUANTITY     ||   %d  \n",p1.quantity);
+              printf("\t\t  ================================================\n");
+              printf("\t\t          PRICE        ||   %f  \n",p1.price);
+              printf("\t\t  ================================================\n");
+            }
+            else printf("\n\t\t            THE PRODUCT DOESN'T EXIST\n");
             break;
         case 6:
             //Voir le historie d'entres et de sorties
@@ -553,7 +563,7 @@ int main() {
             /*return 0;*/
             exit(1);
         default:
-            printf("Invalid choice!\n");
+            printf("INVALID CHOICE!\n");
             break;
         }
     }

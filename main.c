@@ -542,9 +542,9 @@ int main() {
             struct Product p1 ;
             p1=  search_product(name) ;
             if(p1.quantity != 0){
-            printf("Product: %s\n", p.name);
-            printf("Quantity: %d\n", p.quantity);
-            printf("Price: %.2f\n", p.price);}
+            printf("Product: %s\n", p1.name);
+            printf("Quantity: %d\n", p1.quantity);
+            printf("Price: %.2f\n", p1.price);}
             else printf("\n\t\t            the product doesn't exist\n");
             break;
         case 6:

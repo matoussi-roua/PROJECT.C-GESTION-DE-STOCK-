@@ -5,6 +5,7 @@ Les fonctions créés:
 -day()[line 17]: retourner le jour actuel .
 -month()[line 37]: retourner le mois actuel.
 -year()[line 50]: retourner l'année actuelle.
+
 -get_date()[line 64]: retourner la structure date
 -show_all()[line 99]: afficher tout les produits en stock
 -addH()[line 132]: ajouter a l'archive l'historique d'entrée et de sorties 

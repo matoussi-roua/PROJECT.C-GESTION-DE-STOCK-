@@ -228,7 +228,6 @@ void delete_product(char name[100]) {
     
         // Si le nom du produit ne correspond pas à celui à supprimer, écrivez la ligne dans le fichier temporaire
         if (strcmp(product_name, name) != 0) {
-            
             fprintf(temp_fp, "%s,%s,%s", product_name, quantity_str, price_str);
         }
     }
@@ -399,7 +398,7 @@ void seeH(void){
 }
 
 
-void update_product(char *name, int new_quantity, float new_price) {
+void update_product(char name, int new_quantity, float new_price) {
   // Ouvrez le fichier en mode "lecture"
   FILE *fp = fopen("products.txt", "r");
   if (fp == NULL) {
@@ -408,8 +407,7 @@ void update_product(char *name, int new_quantity, float new_price) {
   }
 
   // Créez un fichier temporaire pour stocker les lignes mises à jour
-  FILE *temp_fp ;
-  temp_fp = fopen("temp.txt", "w");
+  FILE *temp_fp=fopen("temp.txt", "w");
   if (temp_fp == NULL) {
     printf("Error creating temporary file!\n");
     exit(1);
@@ -522,10 +520,11 @@ int main() {
             // Modifier un produit
             int quantity4;
             float price4;
+            char name4[100];
             show_all();
             printf("\t\t   ENTER PRODUCT NAME  ||     ");            
-            scanf("%s", name);
-            display_product(name);
+            scanf("%s", name4);
+            display_product(name4);
             printf("\n\t\t      NEW QUANTITY     ||     ");
             scanf("%d", &quantity4);
             printf("\t\t  ================================================\n");
@@ -533,7 +532,7 @@ int main() {
             scanf("%f", &price4);
             printf("\t\t  ================================================\n");
 
-            update_product(name, quantity4, price4);
+            update_product(name4, quantity4, price4);
             break;
         case 5:
             // Rechercher un produit

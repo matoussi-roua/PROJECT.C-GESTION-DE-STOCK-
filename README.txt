@@ -14,3 +14,4 @@ Les fonctions créé:
 -seeH()[line 363]: voir le historie de transaction d'un jour precis aprés avoir selection l'année, le mois et le jour
 -update-product()[line 402]: modifier les description d'un produit en stock
 
+NB: pour certain compilateur la fonction mkdir() doit avoir 2éme variable '0700' pour definir les permission sur le dossier

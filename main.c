@@ -398,6 +398,7 @@ void seeH(void){
 }
 
 
+
 void update_product(char name[100], int new_quantity, float new_price) {
   // Ouvrez le fichier en mode "lecture"
   FILE *fp = fopen("products.txt", "r");

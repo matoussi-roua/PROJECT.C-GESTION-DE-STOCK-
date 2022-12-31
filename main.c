@@ -398,7 +398,7 @@ void seeH(void){
 }
 
 
-void update_product(char name, int new_quantity, float new_price) {
+void update_product(char name[100], int new_quantity, float new_price) {
   // Ouvrez le fichier en mode "lecture"
   FILE *fp = fopen("products.txt", "r");
   if (fp == NULL) {
@@ -407,12 +407,12 @@ void update_product(char name, int new_quantity, float new_price) {
   }
 
   // Créez un fichier temporaire pour stocker les lignes mises à jour
-  FILE *temp_fp=fopen("temp.txt", "w");
+  FILE *temp_fp;
+  temp_fp=fopen("temp.txt", "a");
   if (temp_fp == NULL) {
     printf("Error creating temporary file!\n");
     exit(1);
   }
-
   // Créez une variable pour stocker chaque ligne lue dans le fichier
   char line[100];
 
@@ -422,25 +422,23 @@ void update_product(char name, int new_quantity, float new_price) {
     char *product_name = strtok(line, ",");
     char *quantity_str = strtok(NULL, ",");
     char *price_str = strtok(NULL, ",");
-
     // Si le nom du produit correspond à celui à mettre à jour, utilisez les nouvelles informations
     if (strcmp(product_name, name) == 0) {
-      fprintf(temp_fp, "%s,%d,%.2f\n", name, new_quantity, new_price);
+      fprintf(temp_fp, "%s,%d,%f\n", name, new_quantity, new_price);
     }
     else {
       // Sinon, écrivez la ligne dans le fichier temporaire sans modification
-      /*fprintf(temp_fp, "%s", line);*/
       fprintf(temp_fp, "%s,%s,%s", product_name, quantity_str, price_str);
 
     }
   }
-
+ 
   // Fermez les fichiers
   fclose(fp);
   fclose(temp_fp);
 
   // Supprimez le fichier original
-  remove("products.txt");
+   remove("products.txt");
 
   // Renommez le fichier temporaire en "products.txt"
   rename("temp.txt", "products.txt");
@@ -523,7 +521,7 @@ int main() {
             char name4[100];
             show_all();
             printf("\t\t   ENTER PRODUCT NAME  ||     ");            
-            scanf("%s", name4);
+            scanf("%s", &name4);
             display_product(name4);
             printf("\n\t\t      NEW QUANTITY     ||     ");
             scanf("%d", &quantity4);
